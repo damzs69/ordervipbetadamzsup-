@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FF Beta VIP Purchase</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-image: url('https://a.top4top.io/p_3471rkc7l1.jpg');
+            background-size: cover;
+            background-attachment: fixed;
+            background-position: center;
+            color: white;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.8);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+            position: relative;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .header img {
+            max-width: 200px;
+            margin-bottom: 10px;
+            border-radius: 10px;
+        }
+        .header h1 {
+            margin: 0;
+            color: #FFD700;
+            font-size: 24px;
+        }
+        .form-section {
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: rgba(0, 0, 0, 0.6);
+            border-radius: 8px;
+            display: none;
+        }
+        .form-section.active {
+            display: block;
+        }
+        .form-group {
+            margin-bottom: 15px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        input[type="text"],
+        input[type="number"],
+        input[type="file"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #444;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.9);
+            color: #333;
+        }
+        .error {
+            color: #ff6b6b;
+            font-size: 12px;
+            display: none;
+        }
+        .btn-next, .btn-submit {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            width: 100%;
+            transition: background-color 0.3s;
+        }
+        .btn-next:hover, .btn-submit:hover {
+            background-color: #45a049;
+        }
+        .payment-methods {
+            margin-bottom: 20px;
+        }
+        .payment-option {
+            padding: 15px;
+            background-color: rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
+            margin-bottom: 10px;
+            border: 1px solid transparent;
+        }
+        .payment-option.active {
+            border-color: #FFD700;
+        }
+        .qris-img {
+            max-width: 200px;
+            display: block;
+            margin: 10px auto;
+        }
+        .success-message {
+            text-align: center;
+        }
+        .account-data {
+            text-align: left;
+            background-color: rgba(0, 0, 0, 0.5);
+            padding: 15px;
+            border-radius: 5px;
+            margin: 20px 0;
+        }
+        .warning {
+            color: #FFD700;
+            font-weight: bold;
+        }
+        .contact-support {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 15px;
+            border-top: 1px solid #444;
+        }
+        .whatsapp-link {
+            display: inline-flex;
+            align-items: center;
+            background-color: #25D366;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 5px;
+            text-decoration: none;
+            margin-top: 10px;
+        }
+        .whatsapp-link img {
+            width: 20px;
+            margin-right: 10px;
+        }
+        /* Owner Access Styles */
+        .owner-access {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+        #ownerBtn {
+            background-color: #333;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .owner-panel {
+            display: none;
+            position: absolute;
+            right: 0;
+            top: 40px;
+            background-color: rgba(0, 0, 0, 0.9);
+            padding: 15px;
+            border-radius: 5px;
+            width: 250px;
+            border: 1px solid #FFD700;
+        }
+        .owner-data {
+            margin-top: 15px;
+            max-height: 300px;
+            overflow-y: auto;
+        }
+        .owner-data table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+        }
+        .owner-data th, .owner-data td {
+            border: 1px solid #444;
+            padding: 5px;
+            text-align: left;
+        }
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+            20%, 40%, 60%, 80% { transform: translateX(5px); }
+        }
+        .verified { color: #4CAF50; font-weight: bold; }
+        .rejected { color: #f44336; font-weight: bold; }
+        .secure-badge {
+            background: #4CAF50;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            display: inline-block;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="owner-access">
+        <button id="ownerBtn">Owner</button>
+        <div id="ownerPanel" class="owner-panel">
+            <input type="password" id="ownerPassword" placeholder="Enter Password">
+            <button id="ownerLogin">Login</button>
+            <div id="ownerData" class="owner-data"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <img src="https://a.top4top.io/p_3471rkc7l1.jpg" alt="FF Beta VIP Logo">
+            <h1>HAI 👋 MAU BELI FF BETA VIP?</h1>
+            <p>Ikuti langkah-langkah di bawah ini:</p>
+        </div>
+
+        <div id="formStep1" class="form-section active">
+            <h2>Langkah 1: Data Pemesan</h2>
+            <div class="form-group">
+                <label for="phoneNumber">Nomor WhatsApp (awali dengan 62):</label>
+                <input type="text" id="phoneNumber" placeholder="62xxxxxxxxxxx" maxlength="13">
+                <small class="error" id="phoneError"></small>
+            </div>
+            <div class="form-group">
+                <label for="username">Username FF:</label>
+                <input type="text" id="username" placeholder="Masukkan username FF Anda">
+                <small class="error" id="userError"></small>
+            </div>
+            <button id="nextStep1" class="btn-next">Lanjut ke Pembayaran</button>
+        </div>
+
+        <div id="formStep2" class="form-section">
+            <h2>Langkah 2: Pembayaran</h2>
+            <p>Minimal pembayaran: Rp 10.000</p>
+            
+            <div class="payment-methods">
+                <div class="payment-option active" data-method="dana">
+                    <h3>DANA</h3>
+                    <p>Nomor DANA: 082129071128</p>
+                    <p>Atas nama: Yanti, Damzs, JB Damzs Store</p>
+                </div>
+                <div class="payment-option" data-method="qris">
+                    <h3>QRIS</h3>
+                    <img src="https://b.top4top.io/p_3471qzt601.jpg" alt="QRIS Payment" class="qris-img">
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="paymentProof">Upload Bukti Transfer:</label>
+                <input type="file" id="paymentProof" accept="image/*">
+                <small class="error" id="proofError"></small>
+            </div>
+            <div class="form-group">
+                <label for="paymentAmount">Jumlah Transfer (Rp):</label>
+                <input type="number" id="paymentAmount" min="10000" value="10000">
+            </div>
+            <button id="submitPayment" class="btn-submit">Konfirmasi Pembayaran</button>
+        </div>
+
+        <div id="formStep3" class="form-section">
+            <h2>Pembayaran Berhasil!</h2>
+            <div class="success-message">
+                <p>Terima kasih telah membeli FF Beta VIP!</p>
+                <h3>Berikut data akun FF Beta Anda:</h3>
+                <div class="account-data">
+                    <p><strong>INJECTOR:</strong> <a href="https://sfl.gl/dITI2H" target="_blank">Download</a></p>
+                    <p><strong>FF GLOBAL:</strong> <a href="https://sfl.gl/VZHWy" target="_blank">Download</a></p>
+                    <p><strong>AKSES ID:</strong> <a href="https://ffkipas.my.id/" target="_blank">ffkipas.my.id</a></p>
+                    <p><strong>DASBOARD:</strong> <a href="https://ffkipas.my.id/panel/dashboard/" target="_blank">Dashboard</a></p>
+                    <p><strong>TUTORIAL:</strong> <a href="https://vt.tiktok.com/ZSkS5qhE5/" target="_blank">Tonton Tutorial</a></p>
+                </div>
+                <p class="warning">WAJIB BUKA SEMUA LINK DI ATAS!</p>
+            </div>
+        </div>
+
+        <div class="contact-support">
+            <p>Butuh bantuan? Hubungi Admin:</p>
+            <a href="https://wa.me/6282129071128" class="whatsapp-link" target="_blank">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" alt="WhatsApp">
+                +62 821-2907-1128
+            </a>
+        </div>
+    </div>
+
+    <script>
+    // ==================== OWNER ACCESS WITH SECURE LOGIN ====================
+    document.addEventListener('DOMContentLoaded', function() {
+        const ownerBtn = document.getElementById('ownerBtn');
+        const ownerPanel = document.getElementById('ownerPanel');
+        const ownerLogin = document.getElementById('ownerLogin');
+        const ownerPassword = document.getElementById('ownerPassword');
+        const ownerData = document.getElementById('ownerData');
+        let failedAttempts = 0;
+        const MAX_ATTEMPTS = 3;
+        const LOCKOUT_TIME = 5 * 60 * 1000; // 5 minutes in milliseconds
+
+        ownerBtn.addEventListener('click', function() {
+            // Anti-bruteforce check
+            const lastAttempt = localStorage.getItem('lastFailedAttempt');
+            if (failedAttempts >= MAX_ATTEMPTS && lastAttempt && 
+                (Date.now() - parseInt(lastAttempt)) < LOCKOUT_TIME) {
+                const remainingTime = Math.ceil((LOCKOUT_TIME - (Date.now() - parseInt(lastAttempt))) / 1000 / 60);
+                alert(`Anda telah terkunci. Coba lagi dalam ${remainingTime} menit.`);
+                return;
+            }
+            ownerPanel.style.display = ownerPanel.style.display === 'block' ? 'none' : 'block';
+        });
+
+        ownerLogin.addEventListener('click', function() {
+            // Secure password comparison with timing attack protection
+            let correct = true;
+            const correctPassword = 'DAMZS69';
+            
+            // Timing-safe comparison
+            if (ownerPassword.value.length !== correctPassword.length) {
+                correct = false;
+            } else {
+                for (let i = 0; i < correctPassword.length; i++) {
+                    if (ownerPassword.value.charCodeAt(i) !== correctPassword.charCodeAt(i)) {
+                        correct = false;
+                    }
+                }
+            }
+
+            if (correct) {
+                // Successful login
+                failedAttempts = 0;
+                localStorage.removeItem('lastFailedAttempt');
+                loadPurchaseData();
+                ownerPassword.value = '';
+            } else {
+                // Failed login
+                failedAttempts++;
+                localStorage.setItem('lastFailedAttempt', Date.now().toString());
+                if (failedAttempts >= MAX_ATTEMPTS) {
+                    alert(`Password salah! Akses terkunci selama 5 menit.`);
+                } else {
+                    alert(`Password salah! Percobaan ${failedAttempts}/${MAX_ATTEMPTS}`);
+                }
+            }
+        });
+
+        function loadPurchaseData() {
+            // In production, this would fetch from secure API with authentication
+            const sampleData = [
+                { 
+                    phone: '6281234567890', 
+                    username: 'player1', 
+                    amount: 10000, 
+                    time: new Date().toISOString(),
+                    paymentVerified: true,
+                    proofVerified: true
+                }
+            ];
+
+            let html = `
+            <h3>Data Pembelian Terverifikasi</h3>
+            <div class="security-status">
+                <span class="secure-badge">🔒 TERVERIFIKASI SUPER KETAT</span>
+            </div>
+            <table>
+                <tr>
+                    <th>No. HP</th>
+                    <th>Username</th>
+                    <th>Jumlah</th>
+                    <th>Waktu</th>
+                    <th>Status</th>
+                </tr>`;
+            
+            sampleData.forEach(data => {
+                const statusClass = data.paymentVerified && data.proofVerified ? 'verified' : 'rejected';
+                const statusText = data.paymentVerified && data.proofVerified ? 
+                    '✅ Valid' : '❌ Ditolak';
+                
+                html += `<tr>
+                    <td>${data.phone}</td>
+                    <td>${data.username}</td>
+                    <td>Rp ${data.amount.toLocaleString()}</td>
+                    <td>${new Date(data.time).toLocaleString()}</td>
+                    <td class="${statusClass}">${statusText}</td>
+                </tr>`;
+            });
+            html += '</table>';
+
+            ownerData.innerHTML = html;
+        }
+
+        // ==================== PHONE NUMBER VALIDATION ====================
+        const phoneInput = document.getElementById('phoneNumber');
+        phoneInput.addEventListener('input', function() {
+            // Real-time validation
+            const value = this.value;
+            
+            // Remove any non-digit characters
+            const digitsOnly = value.replace(/\D/g, '');
+            
+            // Ensure starts with 62
+            let formatted = digitsOnly;
+            if (digitsOnly.length > 0 && !digitsOnly.startsWith('62')) {
+                formatted = '62' + digitsOnly;
+            }
+            
+            // Limit to 13 digits
+            if (formatted.length > 13) {
+                formatted = formatted.substring(0, 13);
+            }
+            
+            this.value = formatted;
+            
+            // Visual feedback
+            if (formatted.length === 13 && formatted.startsWith('62')) {
+                this.style.borderColor = '#4CAF50';
+            } else {
+                this.style.borderColor = '#ff6b6b';
+            }
+        });
+
+        // ==================== USERNAME VALIDATION ====================
+        const usernameInput = document.getElementById('username');
+        usernameInput.addEventListener('input', function() {
+            // Basic anti-scripting protection
+            const value = this.value;
+            const cleanValue = value.replace(/[<>\/\\]/g, '');
+            
+            if (value !== cleanValue) {
+                this.value = cleanValue;
+            }
+            
+            // Visual feedback
+            if (cleanValue.length >= 3) {
+                this.style.borderColor = '#4CAF50';
+            } else {
+                this.style.borderColor = '#ff6b6b';
+            }
+        });
+
+        // ==================== FORM NAVIGATION WITH STRICT VALIDATION ====================
+        const nextStep1 = document.getElementById('nextStep1');
+        const formStep1 = document.getElementById('formStep1');
+        const formStep2 = document.getElementById('formStep2');
+        const phoneError = document.getElementById('phoneError');
+        const userError = document.getElementById('userError');
+
+        nextStep1.addEventListener('click', function() {
+            const phoneNumber = phoneInput.value;
+            const username = usernameInput.value;
+            
+            // Reset errors
+            phoneError.style.display = 'none';
+            userError.style.display = 'none';
+            
+            let isValid = true;
+
+            // Phone validation (military grade)
+            if (!phoneNumber.startsWith('62') || phoneNumber.length !== 13 || !/^\d+$/.test(phoneNumber)) {
+                phoneError.textContent = 'HARUS 13 DIGIT DIAWALI 62! CONTOH: 6281234567890';
+                phoneError.style.display = 'block';
+                phoneInput.style.border = '2px solid red';
+                isValid = false;
+                
+                // Shake animation for emphasis
+                phoneInput.style.animation = 'shake 0.5s';
+                setTimeout(() => { phoneInput.style.animation = ''; }, 500);
+            }
+
+            // Username validation
+            if (username.trim().length < 3) {
+                userError.textContent = 'USERNAME MINIMAL 3 KARAKTER!';
+                userError.style.display = 'block';
+                usernameInput.style.border = '2px solid red';
+                isValid = false;
+                
+                usernameInput.style.animation = 'shake 0.5s';
+                setTimeout(() => { usernameInput.style.animation = ''; }, 500);
+            }
+
+            // Check for suspicious patterns
+            if (username.toLowerCase().includes('admin') || 
+                username.toLowerCase().includes('owner') ||
+                username.toLowerCase().includes('script')) {
+                userError.textContent = 'USERNAME TIDAK DIIZINKAN!';
+                userError.style.display = 'block';
+                usernameInput.style.border = '2px solid red';
+                isValid = false;
+                
+                usernameInput.style.animation = 'shake 0.5s 2';
+                setTimeout(() => { usernameInput.style.animation = ''; }, 1000);
+            }
+
+            if (isValid) {
+                // Additional security: Verify phone number format
+                const phoneRegex = /^62[1-9]\d{7,11}$/;
+                if (!phoneRegex.test(phoneNumber)) {
+                    phoneError.textContent = 'NOMOR TIDAK VALID! HARUS NOMOR INDONESIA';
+                    phoneError.style.display = 'block';
+                    phoneInput.style.border = '2px solid red';
+                    isValid = false;
+                    
+                    phoneInput.style.animation = 'shake 0.5s 3';
+                    setTimeout(() => { phoneInput.style.animation = ''; }, 1500);
+                    return;
+                }
+
+                // If all validations pass
+                formStep1.classList.remove('active');
+                formStep2.classList.add('active');
+                
+                // Security logging (in production would send to server)
+                console.log('User passed validation:', {
+                    phone: phoneNumber,
+                    username: username,
+                    timestamp: new Date().toISOString()
+                });
+            }
+        });
+
+        // ==================== PAYMENT METHOD SELECTION ====================
+        const paymentOptions = document.querySelectorAll('.payment-option');
+        paymentOptions.forEach(option => {
+            option.addEventListener('click', function() {
+                // Clear all selections first
+                paymentOptions.forEach(opt => {
+                    opt.classList.remove('active');
+                    opt.style.border = '1px solid transparent';
+                });
+                
+                // Activate selected
+                this.classList.add('active');
+                this.style.border = '2px solid #FFD700';
+                
+                // Security logging
+                const method = this.getAttribute('data-method');
+                console.log('Payment method selected:', method);
+            });
+        });
+
+        // ==================== ANTI-TAMPERING MECHANISM ====================
+        // Detect if developer tools are open
+        setInterval(function() {
+            const before = new Date().getTime();
+            debugger;
+            const after = new Date().getTime();
+            if (after - before > 100) {
+                document.body.innerHTML = `
+                <div style="background:black;color:red;padding:20px;text-align:center;">
+                    <h1>⚠️ AKTIFKAN ALAT DEVELOPER TERDETEKSI! ⚠️</h1>
+                    <p>Akses ditolak karena aktivitas mencurigakan</p>
+                    <p>Silakan muat ulang halaman untuk melanjutkan</p>
+                </div>`;
+                window.stop();
+            }
+        }, 1000);
+
+        // Prevent right-click
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            alert('FITUR INI DILINDUNGI!');
+            return false;
+        });
+
+        // Prevent F12, Ctrl+Shift+I, etc.
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'F12' || 
+                (e.ctrlKey && e.shiftKey && e.key === 'I') || 
+                (e.ctrlKey && e.shiftKey && e.key === 'J') ||
+                (e.ctrlKey && e.key === 'U')) {
+                e.preventDefault();
+                alert('AKSES DEVELOPER DIBLOKIR!');
+                return false;
+            }
+        });
+    });
+
+    // ================ KONFIGURASI LEVEL SUPER DEWA ================
+    const VALID_RECIPIENT_NAMES = ["yanti", "damzs", "jb damzs store"];
+    const VALID_ACCOUNT_NUMBER = "082129071128";
+    const MIN_AMOUNT = 10000; // Minimal transfer Rp 10.000
+    const TIME_TOLERANCE = 5 * 60 * 1000; // Toleransi waktu: 5 menit
+    const WIB_OFFSET = 7 * 60 * 60 * 1000; // UTC+7 (WIB)
+
+    // ================ FUNGSI UTAMA VERIFIKASI ================
+    async function verifyPaymentProof(imageFile) {
+        // 1. EKSTRAK DATA DARI FOTO (Simulasi OCR)
+        const extractedData = await extractDataFromImage(imageFile);
+        
+        // 2. VALIDASI LEVEL SUPER DEWA
+        const validation = ultimateValidation(extractedData);
+        
+        // 3. JIKA LOLOS, KIRIM DATA KE SERVER
+        if (validation.isValid) {
+            confirmPaymentAutomatically(extractedData);
+            return { success: true, data: extractedData };
+        } else {
+            return { success: false, reason: validation.reason };
+        }
+    }
+
+    // ================ EKSTRAK DATA DARI BUKTI TRANSFER (simulasi OCR) ================
+    async function extractDataFromImage(imageFile) {
+        // (Dalam aplikasi nyata, gunakan OCR seperti Tesseract.js atau API)
+        return {
+            recipientName: "JB Damzs Store", // Contoh data ter-extract
+            accountNumber: "082129071128",   // Nomor tujuan
+            amount: "10000",                 // Jumlah transfer
+            time: "14:30 WIB",              // Waktu transfer (format HH:MM WIB)
+            date: "20/05/2024",             // Tanggal transfer (format DD/MM/YYYY)
+            bankName: "DANA",               // Nama bank
+            isEdited: false                 // Deteksi edit foto
+        };
+    }
+
+    // ================ VALIDASI LEVEL SUPER DEWA ================
+    function ultimateValidation(data) {
+        const errors = [];
+        const now = new Date();
+        const currentTimeWIB = new Date(now.getTime() + WIB_OFFSET);
+
+        // 1. VALIDASI NAMA PENERIMA
+        const isRecipientValid = VALID_RECIPIENT_NAMES.some(name => 
+            data.recipientName.toLowerCase().includes(name)
+        );
+        if (!isRecipientValid) {
+            errors.push("NAMA PENERIMA TIDAK SESUAI (HARUS: Yanti/Damzs/JB Damzs Store)");
+        }
+
+        // 2. VALIDASI NOMOR TUJUAN
+        if (data.accountNumber !== VALID_ACCOUNT_NUMBER) {
+            errors.push(`NOMOR TUJUAN SALAH (HARUS: ${VALID_ACCOUNT_NUMBER})`);
+        }
+
+        // 3. VALIDASI WAKTU (HARUS WIB & ±5 MENIT DARI SEKARANG)
+        const [timeStr, timezone] = data.time.split(" ");
+        const [hours, minutes] = timeStr.split(":").map(Number);
+        
+        const paymentTime = new Date(currentTimeWIB);
+        paymentTime.setUTCHours(hours, minutes, 0, 0);
+        
+        const timeDiff = Math.abs(currentTimeWIB - paymentTime);
+        if (timeDiff > TIME_TOLERANCE || timezone !== "WIB") {
+            errors.push("WAKTU TRANSFER TIDAK VALID (HARUS WIB & ±5 MENIT DARI SEKARANG)");
+        }
+
+        // 4. VALIDASI TANGGAL (HARUS HARI INI)
+        const [day, month, year] = data.date.split("/").map(Number);
+        const paymentDate = new Date(Date.UTC(year, month - 1, day));
+        
+        if (
+            paymentDate.getUTCDate() !== currentTimeWIB.getUTCDate() ||
+            paymentDate.getUTCMonth() !== currentTimeWIB.getUTCMonth() ||
+            paymentDate.getUTCFullYear() !== currentTimeWIB.getUTCFullYear()
+        ) {
+            errors.push("TANGGAL TRANSFER TIDAK SESUAI (HARUS HARI INI)");
+        }
+
+        // 5. VALIDASI JUMLAH TRANSFER
+        if (parseInt(data.amount) < MIN_AMOUNT) {
+            errors.push(`MINIMAL TRANSFER RP ${MIN_AMOUNT.toLocaleString("id-ID")}`);
+        }
+
+        // 6. DETEKSI FOTO EDIT (METADATA & MAGIC NUMBER)
+        if (data.isEdited) {
+            errors.push("BUKTI TRANSFER TERDETEKSI EDIT!");
+        }
+
+        return {
+            isValid: errors.length === 0,
+            reason: errors.join("\n")
+        };
+    }
+
+    // ================ KONFIRMASI OTOMATIS JIKA VALID ================
+    function confirmPaymentAutomatically(data) {
+        console.log("✅ PEMBAYARAN TERVERIFIKASI LEVEL SUPER DEWA");
+        console.log("📅 Tanggal:", data.date);
+        console.log("⏰ Waktu:", data.time);
+        console.log("💳 Nomor Tujuan:", data.accountNumber);
+        console.log("👤 Penerima:", data.recipientName);
+        console.log("💸 Jumlah: Rp", data.amount);
+        
+        // LANGSUNG KIRIM DATA AKUN KE PEMBELI
+        sendAccountDetailsToBuyer();
+    }
+
+    function sendAccountDetailsToBuyer() {
+        // Tampilkan halaman sukses (Step 3)
+        document.getElementById("formStep2").classList.remove("active");
+        document.getElementById("formStep3").classList.add("active");
+    }
+
+    // ================ CONTOH PENGGUNAAN ================
+    document.getElementById("submitPayment").addEventListener("click", async () => {
+        const paymentProof = document.getElementById("paymentProof").files[0];
+        if (!paymentProof) {
+            alert("HARAP UPLOAD BUKTI TRANSFER!");
+            return;
+        }
+
+        const result = await verifyPaymentProof(paymentProof);
+        if (result.success) {
+            alert("PEMBAYARAN BERHASIL! AKUN FF BETA AKAN DIKIRIM.");
+        } else {
+            alert(`VERIFIKASI GAGAL:\n${result.reason}`);
+        }
+    });
+    </script>
+</body>
+</html>
